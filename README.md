@@ -11,6 +11,8 @@ python -m venv .venv
 
 # Activate the virtual env
 source .venv/bin/activate
+## For windows cmd
+.venv/Scripts/activate.bat
 
 # Install the dependencies
 pip install -r requirements.txt

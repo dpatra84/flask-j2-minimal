@@ -6,6 +6,10 @@ import os
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from app.services.fileparser_service import pdf_to_txt
+from app.services.llm_service import LLMService
+
+llm_service = LLMService()
+prompt = "Generate a summary of the content given"
 
 
 @app.route("/members")
@@ -35,10 +39,13 @@ def llm_upload():
                 files_data[-1]["name"] = new_filename
                 files_data[-1]["type"] = file.content_type
                 files_data[-1]["size"] = file.content_length
-                if str(file.content_type).find("pdf") == 1:
+                if "pdf" in str(file.content_type):
                     files_data[-1]["content"] = pdf_to_txt(
                         os.path.join(app.config["UPLOAD_FOLDER"], new_filename)
                     )
+
+                    output = llm_service.invoke(prompt, files_data[-1]["content"])
+                    files_data[-1]["output"] = output
 
             return {
                 "status": 200,

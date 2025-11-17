@@ -16,3 +16,4 @@ email_validator
 
 pdfminer.six[image]
 pandas
+langchain-openai
