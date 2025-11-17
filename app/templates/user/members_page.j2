@@ -1,0 +1,75 @@
+{% extends "layouts/base.j2" %}
+
+{% block content %}
+<h1>Welcome, {{ current_user.name }}!</h1>
+<p>This is the members-only page. You have successfully logged in.</p>
+
+
+<form action="" enctype="multipart/form-data" method="post" novalidate>
+    {{ form.hidden_tag() }}
+
+    <div class="input-group mb-3">
+        {{ form.message(class="form-control", placeholder="Write a message", size=32) }}
+
+        {# {{ form.submit(class="btn btn-outline-success", size=32) }} #}
+        <button type="button" class="btn btn-outline-secondary" name="upload">
+            <i class="bi bi-paperclip"></i>
+        </button>
+        <button type="submit" name="submit" class="btn btn-outline-success">
+            <i class="bi bi-send"></i>
+        </button>
+        {{ form.files(class="d-none") }}
+    </div>
+
+    <div class="mb-3">
+        <ul class="list-group" id="file-list">
+        </ul>
+    </div>
+</form>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    document.querySelector("button[name='upload']").addEventListener("click", function (evt) {
+        document.querySelector("input[name='files']").click();
+    });
+
+    document.querySelector("input[name='files']").addEventListener("change", function (evt) {
+        const files = evt.target.files;
+        const fileList = document.getElementById("file-list");
+        fileList.innerHTML = "";
+        for (const file of files) {
+            const li = document.createElement("li");
+            li.className = "list-group-item";
+            li.textContent = file.name;
+            fileList.appendChild(li);
+        }
+    });
+
+    document.querySelector("form").addEventListener("submit", function (evt) {
+        evt.preventDefault();
+
+        const files = document.querySelector("input[name='files']").files;
+        if (files.length > 0) {
+            const formData = new FormData();
+            for (const file of files) {
+                formData.append("files[]", file);
+            }
+            fetch("/upload", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error("Error uploading files:", error);
+            });
+        } else {
+            console.log("No files selected")
+        }
+    });
+</script>
+{% endblock scripts %}
