@@ -23,6 +23,7 @@ class Config:
         os.path.dirname(os.path.dirname(__file__))
     )  # Go up one level to 'flask-j2-minimal'
     UPLOAD_FOLDER = os.path.join(APP_PATH, "storage/uploads")
+    VECTOR_STORAGE_FOLDER = os.path.join(APP_PATH, "storage/chroma_index")
     ALLOWED_EXTENSIONS = {"txt", "pdf", "png", "jpg", "jpeg", "gif"}
 
     # Server / sessions

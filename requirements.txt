@@ -13,8 +13,18 @@ Flask-Migrate>=3.1
 python-dotenv==1.0.0
 email_validator
 markdown
+pip_system_certs
 # psycopg2-binary==2.9.6
 
 pdfminer.six[image]
+# pypdf
+# beautifulsoup4
 pandas
+chromadb 
+
+# Langchain documents
+langchain
+langchain-community
 langchain-openai
+langchain-text-splitters
+

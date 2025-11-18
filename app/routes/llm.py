@@ -8,9 +8,10 @@ from datetime import datetime
 import markdown
 from app.services.fileparser_service import pdf_to_txt
 from app.services.llm_service import LLMService
+from app.constants import DEFAULT_LLM_MODEL, DEFAULT_EBD_MODEL
 
 
-llm_service = LLMService(model="azure/genailab-maas-gpt-4o-mini")
+llm_service = LLMService(llm_model=DEFAULT_LLM_MODEL, embedding_model=DEFAULT_EBD_MODEL)
 prompt = "Generate a summary of the content given"
 
 
@@ -47,7 +48,15 @@ def llm_upload():
                     )
 
                     output = llm_service.invoke(prompt, files_data[-1]["content"])
-                    files_data[-1]["output"] = markdown.markdown(output.content) if output else None
+                    files_data[-1]["output"] = (
+                        markdown.markdown(output.content) if output else None
+                    )
+                    # Truncate content upto 500 words
+                    files_data[-1]["content"] = (
+                        " ".join(files_data[-1]["content"].split()[:500]) + "..."
+                        if len(files_data[-1]["content"].split()) > 500
+                        else files_data[-1]["content"]
+                    )
 
             return {
                 "status": 200,
