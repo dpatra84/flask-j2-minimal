@@ -5,10 +5,12 @@ from app.forms.llm import ChatForm
 import os
 from werkzeug.utils import secure_filename
 from datetime import datetime
+import markdown
 from app.services.fileparser_service import pdf_to_txt
 from app.services.llm_service import LLMService
 
-llm_service = LLMService()
+
+llm_service = LLMService(model="azure/genailab-maas-gpt-4o-mini")
 prompt = "Generate a summary of the content given"
 
 
@@ -45,7 +47,7 @@ def llm_upload():
                     )
 
                     output = llm_service.invoke(prompt, files_data[-1]["content"])
-                    files_data[-1]["output"] = output
+                    files_data[-1]["output"] = markdown.markdown(output.content) if output else None
 
             return {
                 "status": 200,

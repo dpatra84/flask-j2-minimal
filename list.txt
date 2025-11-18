@@ -1,0 +1,6 @@
+Personalized AI Agent for Patient Discharge Instructions in Healthcare
+
+- Current discharge instructions are often generic and complex
+- Patients struggle to understand medical jargon
+- Lack of personalization → confusion, poor adherence which may lead to 
+re-admissions

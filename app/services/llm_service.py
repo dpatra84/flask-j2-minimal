@@ -6,7 +6,7 @@ import httpx
 class LLMService:
     def __init__(self, model=None):
         self.gateway_url = os.getenv("API_GATEWAY", "https://genailab.tcs.in")
-        self.api_key = os.getenv("API_KEY", "sk-22BGSRwNFJYu15TuXiBMog")
+        self.api_key = os.getenv("API_KEY")
         self.__model = (
             "azure_ai/genailab-maas-DeepSeek-V3-0324" if model is None else model
         )
